@@ -13,7 +13,7 @@ function generateToken(params = {}) {
     });
 }
 
-router.post('/register', async (req, res) => {
+router.post('/registerUser', async (req, res) => {
     try {
         const user = await User.create(req.body);
 
@@ -23,27 +23,6 @@ router.post('/register', async (req, res) => {
         })
     } catch (err) {
         return res.status(400).send({ error: 'Registration failed' })
-    }
-})
-router.post('/registerAgendamento/:email', async (req, res) => {
-    try {
-        const { email } = req.params
-
-        const updateUser = await User.updateOne({ email }, {
-            $addToSet: {
-                Agendamento: {
-                    Data: req.body.Data,
-                    Retorno: req.body.Retorno,
-                    Descricao: req.body.Descricao,
-                    Medico: req.body.Medico
-                }
-            }
-        })
-        return res.status(200).send({ message:'Agendamento Cadastrado com sucesso' });
-
-
-    } catch (err) {
-         return res.status(400).send({ error: 'Registration failed' })
     }
 })
 
@@ -59,14 +38,32 @@ router.get('/listUser', async (req, res) => {
     }
 });
 
-router.put('/UpdateUser', async (req, res) => {
-    //req.body={name,password};
+router.put('/UpdateUser/:email', async (req, res) => {
+    const { email } = req.params
+    
     try {
-        const updateUser = await User.updateOne({ name: 'Douglas' }, {
+        const user = await User.find({email})
+        // console.log(email)
+        if(user.length==0){
+            return res.status(400).send({ error: 'failed' });
+        }
+         
+        const updateUser = await User.updateOne({ email }, {
             $set: {
-                name: req.body.name
+                name: req.body.name,
+                sexo: req.body.sexo,
+                telefone: req.body.telefone,
+                nacionalidade: req.body.nacionalidade,
+                endereco:{
+                    rua:req.body.rua,
+                    bairro:req.body.bairro,
+                    numero:req.body.numero,
+                    cep:req.body.cep
+                }
             }
         })
+
+        
 
         // console.log(usuarios[0])
         return res.send({ updateUser });
@@ -76,10 +73,10 @@ router.put('/UpdateUser', async (req, res) => {
     }
 });
 
-router.delete('/DeleteUser', async (req, res) => {
-    //req.body={name,password};
+router.delete('/DeleteUser/:email', async (req, res) => {
+    const {email} = req.params
     try {
-        const deleteUser = await User.deleteOne({ name: req.body.name })
+        const deleteUser = await User.deleteOne({ email})
         if (!deleteUser.deletedCount) {
             return res.send({ erro: 'Usuario Não Encontrado' })
         }
@@ -109,5 +106,28 @@ router.post('/authenticate', async (req, res) => {
         user, token: generateToken({ id: user.id })
     })
 });
+
+
+router.post('/registerAgendamento/:email', async (req, res) => {
+    try {
+        const { email } = req.params
+
+        const updateUser = await User.updateOne({ email }, {
+            $addToSet: {
+                Agendamento: {
+                    Data: req.body.Data,
+                    Retorno: req.body.Retorno,
+                    Descricao: req.body.Descricao,
+                    Medico: req.body.Medico
+                }
+            }
+        })
+        return res.status(200).send({ message:'Agendamento Cadastrado com sucesso' });
+
+
+    } catch (err) {
+         return res.status(400).send({ error: 'Registration failed' })
+    }
+})
 
 module.exports = app => app.use('/auth', router);
