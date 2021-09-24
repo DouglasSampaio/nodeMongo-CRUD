@@ -17,12 +17,33 @@ router.post('/register', async (req, res) => {
     try {
         const user = await User.create(req.body);
 
-        return res.send({ 
+        return res.send({
             user,
-            token:generateToken({id:user.id})
-         })
+            token: generateToken({ id: user.id })
+        })
     } catch (err) {
         return res.status(400).send({ error: 'Registration failed' })
+    }
+})
+router.post('/registerAgendamento/:email', async (req, res) => {
+    try {
+        const { email } = req.params
+
+        const updateUser = await User.updateOne({ email }, {
+            $addToSet: {
+                Agendamento: {
+                    Data: req.body.Data,
+                    Retorno: req.body.Retorno,
+                    Descricao: req.body.Descricao,
+                    Medico: req.body.Medico
+                }
+            }
+        })
+        return res.status(200).send({ message:'Agendamento Cadastrado com sucesso' });
+
+
+    } catch (err) {
+         return res.status(400).send({ error: 'Registration failed' })
     }
 })
 
@@ -85,7 +106,7 @@ router.post('/authenticate', async (req, res) => {
 
 
     res.send({
-        user, token:generateToken({id:user.id})
+        user, token: generateToken({ id: user.id })
     })
 });
 

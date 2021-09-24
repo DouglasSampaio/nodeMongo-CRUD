@@ -22,38 +22,22 @@ const UserSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    cpf:{
-        type: String,
-        unique: true,
+    crm:{
+        type:String,
+        required:true
     },
     telefone:{
         type:String,
         required:true
     },
-    nacionalidade:{
+    naturalidade:{
         type:String,
         required:true
     },
-    endereco:{
-        rua:{
-            type:String
-        },
-        bairro:{
-            type:String
-        },
-        numero:{
-            type:String
-        },
-        cep:{
-            type:String
-        }
+    DataNascimento:{
+        type:String,
+        required:true
     },
-    Agendamento:[{
-        Data:String,
-        Retorno:String,
-        Descricao:String,
-        Medico:String
-    }],
     createAt: {
         type: Date,
         default: Date.now,
@@ -69,5 +53,5 @@ UserSchema.pre('save', async function (next) {
     next();
 });
 
-module.exports = con.model('Usuario', UserSchema, 'Usuario');
+module.exports = con.model('User', UserSchema, 'User');
 
