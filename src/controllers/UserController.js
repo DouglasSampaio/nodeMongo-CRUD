@@ -22,7 +22,8 @@ router.post('/registerUser', async (req, res) => {
             token: generateToken({ id: user.id })
         })
     } catch (err) {
-        return res.status(400).send({ error: 'Registration failed' })
+        console.log(err)
+        return res.status(400).send({ error: err })
     }
 })
 
@@ -49,6 +50,8 @@ router.put('/UpdateUser/:email', async (req, res) => {
             return res.status(400).send({ error: 'failed' });
         }
 
+
+        console.log(req.body.rua)
         const updateUser = await User.updateOne({ email }, {
             $set: {
                 name: req.body.name,
@@ -70,7 +73,7 @@ router.put('/UpdateUser/:email', async (req, res) => {
         return res.send({ updateUser });
 
     } catch (err) {
-        return res.status(400).send({ error: 'failed' });
+        return res.status(400).send({ error: err });
     }
 });
 
