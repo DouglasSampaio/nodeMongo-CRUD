@@ -18,10 +18,6 @@ const UserSchema = new mongoose.Schema({
         required: true,
         select: false,
     },
-    sexo:{
-        type:String,
-        required:true
-    },
     cpf:{
         type: String,
         unique: true,
@@ -29,24 +25,6 @@ const UserSchema = new mongoose.Schema({
     telefone:{
         type:String,
         required:true
-    },
-    nacionalidade:{
-        type:String,
-        required:true
-    },
-    endereco:{
-        rua:{
-            type:String
-        },
-        bairro:{
-            type:String
-        },
-        numero:{
-            type:String
-        },
-        cep:{
-            type:String
-        }
     },
     Agendamento:[{
         Data:String,

@@ -34,7 +34,7 @@ const UserSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    DataNascimento:{
+    dataNascimento:{
         type:String,
         required:true
     },

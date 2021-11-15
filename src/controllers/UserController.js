@@ -13,7 +13,7 @@ function generateToken(params = {}) {
     });
 }
 
-router.post('/registerUser', async (req, res) => {
+router.post('/usuario', async (req, res) => {
     try {
         const user = await User.create(req.body);
 
@@ -27,7 +27,7 @@ router.post('/registerUser', async (req, res) => {
     }
 })
 
-router.get('/listUser', async (req, res) => {
+router.get('/usuario', async (req, res) => {
     try {
         //console.log("oi")
         const usuarios = await User.find();
@@ -40,7 +40,7 @@ router.get('/listUser', async (req, res) => {
     }
 });
 
-router.put('/UpdateUser/:email', async (req, res) => {
+router.put('/usuarios/:email', async (req, res) => {
     const { email } = req.params
 
     try {
@@ -51,19 +51,11 @@ router.put('/UpdateUser/:email', async (req, res) => {
         }
 
 
-        console.log(req.body.rua)
+        //console.log(req.body.rua)
         const updateUser = await User.updateOne({ email }, {
             $set: {
                 name: req.body.name,
-                sexo: req.body.sexo,
                 telefone: req.body.telefone,
-                nacionalidade: req.body.nacionalidade,
-                endereco: {
-                    rua: req.body.rua,
-                    bairro: req.body.bairro,
-                    numero: req.body.numero,
-                    cep: req.body.cep
-                }
             }
         })
 
@@ -77,7 +69,7 @@ router.put('/UpdateUser/:email', async (req, res) => {
     }
 });
 
-router.delete('/DeleteUser/:email', async (req, res) => {
+router.delete('/usuarios/:email', async (req, res) => {
     const { email } = req.params
     try {
         const deleteUser = await User.deleteOne({ email })
