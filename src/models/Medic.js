@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const con = require('../database/conecct');
 const bcrypt = require('bcryptjs');
 
-const UserSchema = new mongoose.Schema({
+const MedicSchema = new mongoose.Schema({
     name: {
         type: String,
         require: true,
@@ -46,12 +46,12 @@ const UserSchema = new mongoose.Schema({
 
 
 
-UserSchema.pre('save', async function (next) {
+MedicSchema.pre('save', async function (next) {
     const hash = await bcrypt.hash(this.password, 10);
     this.password = hash;
 
     next();
 });
 
-module.exports = con.model('User', UserSchema, 'User');
+module.exports = con.model('Medic', MedicSchema, 'Medic');
 
