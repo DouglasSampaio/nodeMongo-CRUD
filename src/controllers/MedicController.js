@@ -87,9 +87,9 @@ router.delete('/medics/:email', async (req, res) => {
 });
 
 router.post('/authenticateMedic', async (req, res) => {
-    const { email, password } = req.body;
+    const { name, password } = req.body;
 
-    const medic = await Medic.findOne({ email }).select('+password');
+    const medic = await Medic.findOne({ name }).select('+password');
 
     if (!medic)
         return res.status(400).send({ error: 'medic not found' })
